@@ -33,7 +33,7 @@ params = {'axes.labelsize': 16,
           'ytick.labelsize': 10}
 
 mpl.rc('mathtext', fontset='stixsans',default='regular')
-# print(v,w)
+
 
 
 fig = plt.figure(figsize=(6,6))
@@ -117,12 +117,12 @@ def reset(event):
     sT.reset()
 button.on_clicked(reset)
 
-def onpick4(event):
+def picked(event):
     if event.inaxes == ax1:
         sxinit.val = event.xdata
         syinit.val = event.ydata
         update(0)
 
-fig.canvas.mpl_connect('button_press_event',onpick4)
+fig.canvas.mpl_connect('button_press_event',picked)
 
 plt.show()
