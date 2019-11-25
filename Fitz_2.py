@@ -3,16 +3,16 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button
 import matplotlib as mpl
 
-dt = 0.1 
+dt = 0.1 #time interval for the derivative
 
-def dyn_fn(xinit, tmax, dt, args): 
+def dyn_fn(xinit, tmax, dt, args):#defining the dynamics 
     x = np.zeros((int(tmax/dt), len(xinit)))
     x[0] = xinit
     for i in range(1,int(tmax/dt)):
         x[i] = x[i-1] + dt*eqs_fn(x[i-1],args) 
     return x
 
-def eqs_fn(x,args): 
+def eqs_fn(x,args): #constants as arguments 
     I, a, gamma, eps = args[0], args[1],args[2],args[3]
     v = x[0]
     w = x[1]
@@ -20,7 +20,7 @@ def eqs_fn(x,args):
     dwdt = eps*(v - gamma*w)
     z = np.array([dvdt, dwdt])
     return z
-def v_nullcline(v,I):
+def v_nullcline(v,I):            ## Defining Nullclines 
     return v**2 -v-v**3+v**2 + I
 
 def w_nullcline(v,gamma):
@@ -34,7 +34,7 @@ params = {'axes.labelsize': 16,
 
 mpl.rc('mathtext', fontset='stixsans',default='regular')
 
-
+#Setting axes for each variable 
 
 fig = plt.figure(figsize=(6,6))
 ax = fig.add_axes([.1,.1,.85,.275])
@@ -53,7 +53,7 @@ axsgamma  = plt.axes([0.6, 0.6, 0.3, 0.04])
 axseps  = plt.axes([0.6, 0.55, 0.3, 0.04])
 axsT  = plt.axes([0.6, 0.5, 0.3, 0.04])
 axh = plt.axes([-1,-1,1,1])
-
+#adding sliders into the plot to change the constants in a specific range as given below 
 
 sI = Slider(axsI, r'$I$', -.7, .5, valinit=0,color='maroon')
 sa = Slider(axsa, r'$a$', 0, .5, valinit=0,color='g')
@@ -77,7 +77,7 @@ fig.text(.5,.95,'FitzHugh-Nagumo model',ha='center',size=18)
 fig.text(.625,.86,r'$\frac{dv}{dt} = a v^2 -av-v^3+v^2 - w + I$',size=14,color='r')
 fig.text(.625,.8,r'$\frac{dw}{dt} = \epsilon (v -gamma w) $',size=14,color='b')
 
-
+#updated values are passed on here
 def update(val):
     xinit = [sxinit.val,syinit.val]
     T = sT.val
@@ -109,6 +109,7 @@ sT.on_changed(update)
 
 resetax = plt.axes([0.8, 0.45, 0.1, 0.04]) # Reset button
 button = Button(resetax, 'Reset', color=axcolor, hovercolor='0.975')
+#reset
 def reset(event):
     sI.reset()
     sgamma.reset()
